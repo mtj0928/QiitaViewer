@@ -1,0 +1,23 @@
+{
+  "pins" : [
+    {
+      "identity" : "keychainaccess",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kishikawakatsumi/KeychainAccess.git",
+      "state" : {
+        "revision" : "8d33ffd6f74b3bcfc99af759d4204c6395a3f918",
+        "version" : "3.2.1"
+      }
+    },
+    {
+      "identity" : "swift-markdown-ui",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/gonzalezreal/swift-markdown-ui",
+      "state" : {
+        "revision" : "12b351a75201a8124c2f2e1f9fc6ef5cd812c0b9",
+        "version" : "2.1.0"
+      }
+    }
+  ],
+  "version" : 2
+}
