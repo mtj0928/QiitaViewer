@@ -25,12 +25,12 @@ public struct User: Codable, Identifiable, Hashable, Sendable {
 extension User {
     public init(_ model: UserModel) {
         self.init(
-            id: model.id,
+            id: model.id!,
             name: model.name,
             gitHubLoginName: model.gitHubLoginName,
             twitterScreenName: model.twitterScreenName,
             description: model.introductionText,
-            profileImageURL: model.profileImageURL
+            profileImageURL: model.profileImageURL!
         )
     }
 

@@ -23,14 +23,38 @@ public struct ItemResponse: Codable, Identifiable, Hashable, Sendable {
 }
 
 extension ItemResponse {
-    public static var dummy: ItemResponse {
+    public static var dummy1: ItemResponse {
         ItemResponse(
-            id: "item id",
-            title: "ダミータイトル",
+            id: UUID().uuidString,
+            title: "GitHub ActionsでDocCをビルドしてGitHub Pagesにデプロイする方法",
+            body: sampleMarkdown,
+            createdAt: .now,
+            commentsCount: 1,
+            likesCount: 5,
+            user: .dummy,
+            url: URL(string: "https://qiita.com/matsuji/items/be33e4338e0b19084174")!)
+    }
+
+    public static var dummy2: ItemResponse {
+        ItemResponse(
+            id: UUID().uuidString,
+            title: "SwiftUIでプレゼンスライドが作れるSlideKit",
             body: sampleMarkdown,
             createdAt: .now,
             commentsCount: 10,
-            likesCount: 5,
+            likesCount: 24,
+            user: .dummy,
+            url: URL(string: "https://qiita.com/matsuji/items/be33e4338e0b19084174")!)
+    }
+
+    public static var dummy3: ItemResponse {
+        ItemResponse(
+            id: UUID().uuidString,
+            title: "CoreDataのラッパーライブラリ CoreStore入門",
+            body: sampleMarkdown,
+            createdAt: .now,
+            commentsCount: 0,
+            likesCount: 8,
             user: .dummy,
             url: URL(string: "https://qiita.com/matsuji/items/be33e4338e0b19084174")!)
     }

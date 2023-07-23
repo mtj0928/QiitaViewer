@@ -16,14 +16,14 @@ public struct Item: Codable, Identifiable, Hashable, Sendable {
 extension Item {
     public init(_ model: ItemModel) {
         self.init(
-            id: model.id,
-            title: model.title,
-            body: model.body,
-            createdAt: model.createdAt,
-            commentsCount: model.commentsCount,
-            likesCount: model.likesCount,
+            id: model.itemID!,
+            title: model.title!,
+            body: model.body!,
+            createdAt: model.createdAt!,
+            commentsCount: Int(model.commentsCount),
+            likesCount: Int(model.likesCount),
             user: User(model.user!),
-            url: model.url
+            url: model.url!
         )
     }
 
@@ -42,5 +42,7 @@ extension Item {
 }
 
 extension Item {
-    public static var dummy: Item { Item(.dummy) }
+    public static var dummy1: Item { Item(.dummy1) }
+    public static var dummy2: Item { Item(.dummy2) }
+    public static var dummy3: Item { Item(.dummy3) }
 }

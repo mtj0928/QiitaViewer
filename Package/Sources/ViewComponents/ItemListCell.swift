@@ -48,7 +48,7 @@ public struct ItemListCell: View {
 struct ItemListCell_Previews: PreviewProvider {
     static var previews: some View {
         List {
-            ItemListCell(item: .dummy)
+            ItemListCell(item: .dummy1)
         }
         .listStyle(.plain)
     }

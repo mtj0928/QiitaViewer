@@ -33,8 +33,8 @@ extension UserResponse {
     public static var dummy: UserResponse {
         UserResponse(
             id: "user id",
-            name: "ダミーユーザー",
-            description: "ダミーのユーザーです",
+            name: "まつじ",
+            description: "iOS App Developer",
             profileImageURL: URL(string: "https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/70011/profile-images/1641719464")!
         )
     }

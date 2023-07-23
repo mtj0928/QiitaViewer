@@ -16,14 +16,11 @@ public struct DependencyProvider<Content>: View where Content: View {
             content(dependency)
         } else {
 #if DEBUG
-            Rectangle()
-                .foregroundColor(.red)
-                .overlay {
-                    Text("Dependency is not set.")
-                        .foregroundColor(.white)
-                        .font(.title3)
-                        .fontWeight(.black)
-                }
+            Text("Dependency is not set.")
+                .foregroundColor(.white)
+                .font(.system(.title3, weight: .black))
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(Color.red)
                 .ignoresSafeArea()
 #else
             EmptyView()
@@ -43,3 +40,8 @@ extension EnvironmentValues {
     }
 }
 
+#Preview {
+    DependencyProvider { dependency in
+        Text("Foo")
+    }
+}

@@ -1,17 +1,17 @@
 import APIClient
+import CoreData
 import Database
 import Foundation
-import SwiftData
 
 public struct Dependency: Equatable {
     private let id = UUID()
 
-    public let container: ModelContainer
+    public let container: NSPersistentContainer
     public let apiClient: any APIClientProtocol
     public let keychain: any KeychainProtocol
 
     public init(
-        container: ModelContainer,
+        container: NSPersistentContainer,
         apiClient: some APIClientProtocol,
         keychain: some KeychainProtocol
     ) {

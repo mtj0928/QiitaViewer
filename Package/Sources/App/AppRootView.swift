@@ -3,31 +3,15 @@ import Core
 import ItemListFeature
 import SavedItemListFeature
 import SwiftUI
-import SwiftData
-
-enum ViewKind: String, Hashable, Identifiable, CaseIterable {
-    case search, download, account
-
-    var id: String { rawValue }
-
-    var label: some View {
-        switch self {
-        case .search: return Label("探す", systemImage: "magnifyingglass")
-        case .download: return Label("保存済み", systemImage: "tray.and.arrow.down")
-        case .account: return Label("アカウント", systemImage: "person")
-        }
-    }
-}
 
 public struct AppRootView: View {
-    let dependency: Dependency
 
-    @State var selectedView: ViewKind = .search
+    private let dependency: Dependency
+    private let itemListViewModel: ItemListViewModel
+    private let accountViewModel: AccountViewModel
 
-    let itemListViewModel: ItemListViewModel
-    let accountViewModel: AccountViewModel
-
-    @Environment(\.horizontalSizeClass) var verticalSize
+    @State private var selectedView: ViewKind = .search
+    @Environment(\.horizontalSizeClass) private var verticalSize
 
     public init(dependency: Dependency) {
         self.dependency = dependency
@@ -74,25 +58,50 @@ public struct AppRootView: View {
                         ItemListView(viewModel: itemListViewModel)
                     case .download:
                         SavedItemListView()
-                            .tabItem {
-                                Image(systemName: "tray.and.arrow.down")
-                                Text("保存済み")
-                            }
                     case .account:
                         AccountView(viewModel: accountViewModel)
                     }
                 }
                 .navigationTitle("Qiita Viewer")
             default:
-                EmptyView()
+                Text("")
             }
         }
         .environment(\.dependency, dependency)
+        .environment(\.managedObjectContext, dependency.container.viewContext)
+    }
+}
+
+enum ViewKind: String, Hashable, Identifiable, CaseIterable {
+    case search, download, account
+
+    var id: String { rawValue }
+
+    var label: some View {
+        switch self {
+        case .search: return Label("探す", systemImage: "magnifyingglass")
+        case .download: return Label("保存済み", systemImage: "tray.and.arrow.down")
+        case .account: return Label("アカウント", systemImage: "person")
+        }
     }
 }
 
 struct RootView_Previews: PreviewProvider {
     static var previews: some View {
-        AppRootView(dependency: .mock)
+        AppRootView(dependency: Dependency(
+            container: .mock,
+            apiClient: .mock(
+                getItems: { _ in
+                    return [
+                        .dummy1,
+                        .dummy2,
+                        .dummy3,
+                    ]
+                },
+                authenticatedUser: { .dummy }
+            ),
+            keychain: .mock
+        ))
+        .tint(Color.green)
     }
 }

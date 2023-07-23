@@ -17,7 +17,7 @@ extension APIClientProtocol where Self == MockAPIClient {
     public static var mock: MockAPIClient {
         MockAPIClient { _ in
             try await Task.sleep(nanoseconds: 1_000_000_000)
-            return [.dummy]
+            return [.dummy1]
         } authenticatedUserHandler: {
             try await Task.sleep(nanoseconds: 1_000_000_000)
             return .dummy
@@ -37,7 +37,7 @@ extension APIClientProtocol where Self == MockAPIClient {
     public static var tooSlow: MockAPIClient {
         MockAPIClient { _ in
             try await Task.sleep(nanoseconds: 10_000_000_000)
-            return [.dummy]
+            return [.dummy1]
         } authenticatedUserHandler: {
             try await Task.sleep(nanoseconds: 10_000_000_000)
             return .dummy

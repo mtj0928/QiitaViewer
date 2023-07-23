@@ -1,46 +1,40 @@
 import Database
+import CoreData
 import Foundation
-import SwiftData
 
 public enum UserDataAccessObject {
-    public static func fetch(id: String, on context: ModelContext) throws -> UserModel? {
-        let users = try context.fetch(.users(id: id))
+    public static func fetch(id: String, on context: NSManagedObjectContext) throws -> UserModel? {
+        let fetchRequest = UserModel.fetchRequest()
+        fetchRequest.predicate = .users(id: id)
+        let users = try context.fetch(fetchRequest)
         return users.first
     }
 
-    public static func insert(user: User, on context: ModelContext) throws -> UserModel {
-        let userModel = UserModel(user)
+    public static func insert(user: User, on context: NSManagedObjectContext) throws -> UserModel {
+        let userModel = UserModel(user, context: context)
         context.insert(userModel)
         return userModel
     }
 
-    public static func fetchOrInsertUser(user: User, on context: ModelContext) throws -> UserModel {
+    public static func fetchOrInsertUser(user: User, on context: NSManagedObjectContext) throws -> UserModel {
         try fetch(id: user.id, on: context) ?? insert(user: user, on: context)
     }
 }
 
-extension FetchDescriptor {
-    fileprivate static func users(id: String) -> FetchDescriptor<UserModel> {
-        var fetchDescriptor = FetchDescriptor<UserModel>(
-            predicate: #Predicate {
-                $0.id == id
-            }
-        )
-        fetchDescriptor.fetchLimit = 50
-        fetchDescriptor.includePendingChanges = true
-        return fetchDescriptor
+extension NSPredicate {
+    fileprivate static func users(id: String) -> NSPredicate {
+        NSPredicate(format: "id >= %@", id)
     }
 }
 
 extension UserModel {
-    convenience public init(_ user: User) {
-        self.init(
-            id: user.id,
-            name: user.name,
-            gitHubLoginName: user.gitHubLoginName,
-            twitterScreenName: user.twitterScreenName,
-            introductionText: user.description,
-            profileImageURL: user.profileImageURL
-        )
+    convenience public init(_ user: User, context: NSManagedObjectContext) {
+        self.init(context: context)
+        self.id = user.id
+        self.name = user.name
+        self.gitHubLoginName = user.gitHubLoginName
+        self.twitterScreenName = user.twitterScreenName
+        self.introductionText = user.description
+        self.profileImageURL = user.profileImageURL
     }
 }

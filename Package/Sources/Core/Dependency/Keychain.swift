@@ -1,6 +1,6 @@
 import APIClient
 
-public protocol KeychainProtocol {
+public protocol KeychainProtocol: AccessTokenProvider {
     func get(_ key: String) -> String?
     func set(_ value: String?, for key: String)
 }

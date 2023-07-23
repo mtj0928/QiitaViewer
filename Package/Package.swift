@@ -13,7 +13,8 @@ let package = Package(
                 "AccountFeature",
                 "ItemListFeature",
                 "SavedItemListFeature",
-                "ItemDetailFeature"
+                "ItemDetailFeature",
+                "Core"
             ]),
     ],
     dependencies: [

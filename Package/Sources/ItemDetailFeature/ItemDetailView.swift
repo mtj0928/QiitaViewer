@@ -68,7 +68,7 @@ struct ItemDetailView_Previews: PreviewProvider {
             NavigationStack {
                 ItemDetailView(
                     viewModel: ItemDetailViewModel(
-                        item: .dummy,
+                        item: .dummy1,
                         useCase: ItemDetailUseCase(container: .mock)
                     )
                 )

@@ -1,21 +1,29 @@
 import Core
+import CoreData
 import Database
 import ItemDetailFeature
-import SwiftData
 import SwiftUI
 import ViewComponents
 
 public struct SavedItemListView: View {
+
     @State private var path = NavigationPath()
-    @Query private var items: [ItemModel]
-    @Environment(\.modelContext) private var context
+
+    @FetchRequest<ItemModel>(
+        entity: ItemModel.entity(),
+        sortDescriptors: [NSSortDescriptor(keyPath: \ItemModel.insertedAt, ascending: true)]
+    ) private var items
+
+    @Environment(\.managedObjectContext) private var context
 
     public init() {}
 
     public var body: some View {
         NavigationStack(path: $path) {
             List {
-                ForEach(items.map(Item.init)) { item in
+                ForEach(items) { itemModel in
+                    let item = Item(itemModel)
+                    let _ = itemModel.id
                     Button {
                         path.append(item)
                     } label: {
@@ -53,22 +61,24 @@ public struct SavedItemListView: View {
     }
 }
 
+
 struct SavedItemListView_Previews: PreviewProvider {
     static var previews: some View {
-        let container: ModelContainer = .mock
-        let user = UserModel(.dummy)
-        container.mainContext.insert(user)
-        let item = ItemModel(
-            id: "dummy id",
-            title: "title",
-            body: "body",
-            createdAt: .now,
-            commentsCount: 0,
-            likesCount: 10,
-            user: user,
-            url: URL(string: "https://example.com")!
-        )
-        container.mainContext.insert(item)
+        let container: NSPersistentContainer = .mock
+        let user = UserModel(.dummy, context: container.viewContext)
+        container.viewContext.insert(user)
+
+        let item = ItemModel(context: container.viewContext)
+        item.itemID = "dummy id"
+        item.title = "ダミータイトル"
+        item.body = "本文"
+        item.createdAt = .now
+        item.commentsCount = 0
+        item.likesCount = 10
+        item.user =  user
+        item.url = URL(string: "https://example.com")!
+        container.viewContext.insert(item)
+
         return TabView {
             SavedItemListView()
                 .tabItem {
@@ -76,6 +86,7 @@ struct SavedItemListView_Previews: PreviewProvider {
                     Text("保存済み")
                 }
         }
-        .modelContext(container.mainContext)
+        .environment(\.managedObjectContext, container.viewContext)
+        .tint(.green)
     }
 }

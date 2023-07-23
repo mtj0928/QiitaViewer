@@ -72,14 +72,11 @@ public struct ItemListView: View {
 
 struct ItemListView_Previews: PreviewProvider {
     static var previews: some View {
-        ItemListView(
-            viewModel: ItemListViewModel(apiClient: { () -> MockAPIClient in
-                var mock = MockAPIClient.mock
-                mock.getItemsHandler = { _ in
-                    Bool.random() ? [.dummy] : []
-                }
-                return mock
-            }())
-        )
+        var apiClient: MockAPIClient = .mock
+        apiClient.getItemsHandler = { query in
+            query.lowercased().contains("github") ? [.dummy1] : []
+        }
+        let viewModel = ItemListViewModel(apiClient: apiClient)
+        return ItemListView(viewModel: viewModel)
     }
 }
