@@ -23,7 +23,7 @@ public enum UserDataAccessObject {
 
 extension NSPredicate {
     fileprivate static func users(id: String) -> NSPredicate {
-        NSPredicate(format: "id >= %@", id)
+        NSPredicate(format: "id == %@", id)
     }
 }
 

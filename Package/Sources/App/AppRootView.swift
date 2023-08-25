@@ -9,6 +9,7 @@ public struct AppRootView: View {
     private let dependency: Dependency
     private let itemListViewModel: ItemListViewModel
     private let accountViewModel: AccountViewModel
+    private let saveItemListViewModel: SaveItemListViewModel
 
     @State private var selectedView: ViewKind = .search
     @Environment(\.horizontalSizeClass) private var verticalSize
@@ -20,6 +21,7 @@ public struct AppRootView: View {
             apiClient: dependency.apiClient,
             keychain: dependency.keychain
         )
+        self.saveItemListViewModel = SaveItemListViewModel(container: dependency.container)
     }
 
     public var body: some View {
@@ -31,7 +33,7 @@ public struct AppRootView: View {
                         .tabItem { ViewKind.search.label }
                         .tag(ViewKind.search)
 
-                    SavedItemListView()
+                    SavedItemListNavigationView(viewModel: saveItemListViewModel)
                         .tabItem { ViewKind.download.label }
                         .tag(ViewKind.download)
 
@@ -57,7 +59,7 @@ public struct AppRootView: View {
                     case .search:
                         ItemListView(viewModel: itemListViewModel)
                     case .download:
-                        SavedItemListView()
+                        SavedItemListNavigationView(viewModel: saveItemListViewModel)
                     case .account:
                         AccountView(viewModel: accountViewModel)
                     }
